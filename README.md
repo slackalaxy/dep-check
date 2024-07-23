@@ -1,4 +1,4 @@
-# depsck: dependencies check
+# depscheck: dependencies check
 Some extra, unofficial, tools to check/update relations between
 dependencies of ports.
 
