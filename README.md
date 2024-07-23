@@ -17,13 +17,6 @@ This tool uses `revdep listinst` to check for missing dependencies of
 the packages that are installed, then reports them and outputs their
 immediate installed dependents.
 
-## prtdepadd
-Adds missing dependencies to a port.
-
-First, `prtdepadd` scans the Pkgfile for existing dependencies, then
-calls `finddeps` and merges both back in the Pkgfile. The port must
-be installed first.
-
 ## revlibpkg
 Find which ports contain missing libraries needed by a package.
 
