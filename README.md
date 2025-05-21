@@ -17,7 +17,11 @@ This tool uses `revdep listinst` to check for missing dependencies of
 the packages that are installed, then reports them and outputs their
 immediate installed dependents.
 
-## revlibpkg
+## missdepslist
+Same as above, but outputs a simple list of missing dependencies, easy
+to parse.
+
+## revlib
 Find which ports contain missing libraries needed by a package.
 
 Unlike `revdep`, which will tell you what packages need to be recompiled
