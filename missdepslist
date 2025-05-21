@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# misslist: check for missing deps of installed packages
+#
+# Petar Petrov, slackalaxy at gmail dot com
+
+prt-get listinst | xargs prt-get depends | grep "\[ \]" | sed "s:\[ \] ::g"
