@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# revlibpkg: find ports that contain missing libs
+# revlib: find ports that contain missing libs
 #
 # revlibpkg uses revdep to check for missing .so files, then searches
 # with prt-get to find which ports contain them. Redundant libraries are
