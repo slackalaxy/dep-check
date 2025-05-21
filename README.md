@@ -13,7 +13,7 @@ omitted. The wrapper also checks if any libs are missing by calling
 ## missdeps
 Check for missing deps of all packages that are installed.
 
-This tool uses `revdep listinst` to check for missing dependencies of
+This tool uses `prt-get listinst` to check for missing dependencies of
 the packages that are installed, then reports them and outputs their
 immediate installed dependents.
 
