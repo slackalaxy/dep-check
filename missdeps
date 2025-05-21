@@ -2,7 +2,7 @@
 #
 # missdeps: check for missing deps of installed packages
 #
-# missdeps uses revdep listinst to check for missing dependencies, then
+# missdeps uses prt-get listinst to check for missing dependencies, then
 # outputs their immediate dependents
 #
 # Petar Petrov, slackalaxy at gmail dot com
