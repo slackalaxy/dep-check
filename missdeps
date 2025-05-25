@@ -18,7 +18,7 @@ else
     echo "-- ([ ] missing, [i] = installed dependents)"
 fi
 
-# Report missing rependencies...
+# Report missing dependencies...
 deps=""
 for m in ${missing[@]}; do
   echo -e "[ ] $m"
