@@ -4,16 +4,16 @@
 .\"
 .TH revlib 1
 .SH NAME
-prtskim \- Find which ports contain missing libraries needed by a package.
+revlib \- Find which ports contain missing libraries needed by a package.
 .SH SYNOPSIS
 .PP
 .B revlib
 .SH DESCRIPTION
 
 Unlike \fBrevdep\fP(1), which will tell you what packages need to be recompiled after
-a \fBprt-get sysup\fP(8), this small tool will report which ports contain the missing
+a \fBprt\-get sysup\fP(8), this small tool will report which ports contain the missing
 libraries required by a certain package. It is handy, for example, on systems managed
-by \fBpkg-get\fP(8), where some packages might have linked to optional ports, not listed
+by \fBpkg\-get\fP(8), where some packages might have linked to optional ports, not listed
 at the \fB#Depends on:\fP line. The \fBports\fP(8) database (and hence .footprints)
 should be updated for this to work properly.
 
@@ -27,7 +27,7 @@ no options available
 outputs ports containing the missing libraries required by the installed \fBport\fP
 
 .SH SEE ALSO
-\fBrevdep\fP(1), \fBprt-get sysup\fP(8), \fBports\fP(8)
+\fBrevdep\fP(1), \fBprt\-get\fP(8), \fBports\fP(8)
 
 .SH AUTHOR
 
