@@ -9,11 +9,6 @@ the "# Depends on:" line in the Pkgfile. Dependencies from core are
 omitted. The wrapper also checks if any libs are missing by calling
 `revdep`.
 
-## prtskim
-This cleans and updates port(s), by running `prtwash`, removing any
-`.md5sum`, and updateing footprint and signature. It can be run on a
-single port or a collection of ports, e.g. `prtskim *`.
-
 ## missdeps
 Check for missing deps of all packages that are installed.
 
@@ -24,6 +19,11 @@ immediate installed dependents.
 ## missdepslist
 Same as above, but outputs a simple list of missing dependencies, easy
 to parse.
+
+## prtskim
+This cleans and updates port(s), by running `prtwash`, removing any
+`.md5sum`, and updateing footprint and signature. It can be run on a
+single port or a collection of ports, e.g. `prtskim *`.
 
 ## revlib
 Find which ports contain missing libraries needed by a package.
