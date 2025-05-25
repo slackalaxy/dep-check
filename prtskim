@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# prtskim: extensive cleaning and refreshing of ports
+#
+# Petar Petrov, slackalaxy at gmail dot com
+#
+
+# Is input empty?
+if [ "$1" = "" ]; then
+    echo "Input is empty. Usage: $(basename $0) [port...]"
+    exit 1
+fi
+
+# no options with the tool
+for t in "$@"; do
+  if [ "${t:0:1}" = "-" ]; then
+    echo -e "Invalid input $t. Usage: $(basename $0) [package...]"
+    exit 1
+  fi
+done
+
+for i in "$@"; do
+  if [[ -d $i ]]; then
+      if [ -f $i/Pkgfile ]; then
+        prtwash $i
+        cd $i
+        rm -rf .md5sum
+        pkgmk -uf
+        pkgmk -us
+        cd ..
+      else
+        echo "===== $i is not a port, ingoring"
+      fi
+  else
+    echo "===== $i is not a directory, ignoring"
+  fi
+done
