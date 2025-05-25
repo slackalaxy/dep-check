@@ -1,6 +1,5 @@
-# dep-check: dependencies check
-Some extra, unofficial, tools to check/update relations between
-dependencies of ports.
+# prt-supplements
+Some extra, unofficial, tools to check for dependencies and refresh ports.
 
 ## finddepsrow
 List port's dependencies as a row.
