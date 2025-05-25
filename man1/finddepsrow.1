@@ -1,0 +1,38 @@
+.\" 
+.\" finddepsrow manual page.
+.\" (C) 2025 by Petar Petrov <slackalaxy@gmail.com> 
+.\"
+.TH finddepsrow 1
+.SH NAME
+finddepsrow \- List port's dependencies as a row.
+.SH SYNOPSIS
+.PP
+.B finddepsrow
+.SH DESCRIPTION
+
+The \fBfinddepsrow\fP script Output dependencies found by \fBfinddeps\fP(1)
+as a single row, suitable for the "# Depends on:" line in the \fBPkgfile\fP(5).
+Dependencies from \fB(core)\fP are omitted. The wrapper also checks if any libs
+are missing by calling \fBrevdep\fP(1).
+
+.SH OPTIONS
+.TP
+no options available
+
+.SH EXAMPLES
+.B
+finddeps pinentry
+.PP
+displays the dependencies of pinentry binaries and libs, in the order
+that they appear in the package database:
+
+.TP
+cairo fontconfig freetype fribidi gdk-pixbuf glib graphite2 gtk harfbuzz libassuan libgpg-error libjpeg-turbo libpng pango xorg-libpixman xorg-libx11 xorg-libxau xorg-libxcb xorg-libxcomposite xorg-libxcursor xorg-libxdamage xorg-libxdmcp xorg-libxext xorg-libxfixes xorg-libxinerama xorg-libxrandr xorg-libxrender
+
+
+.SH SEE ALSO
+\fBfinddeps\fP(1), \fBprt\-get\fP(8), \fBports\fP(8), \fBPkgfile\fP(5), \fBrevdep\fP(1)
+
+.SH AUTHOR
+
+\fBfinddepsrow\fP was written by Petar Petrov <slackalaxy@gmail.com> for CRUX.

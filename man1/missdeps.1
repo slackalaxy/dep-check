@@ -1,0 +1,54 @@
+.\" 
+.\" missdeps manual page.
+.\" (C) 2025 by Petar Petrov <slackalaxy@gmail.com> 
+.\"
+.TH missdeps 1
+.SH NAME
+missdeps \- Check for missing deps of all packages that are installed.
+.SH SYNOPSIS
+.PP
+.B missdeps
+.SH DESCRIPTION
+
+The \fBmissdeps\fP script uses \fBprt-get\fP(8) listinst to check for missing 
+dependencies of the packages that are installed, then reports them and
+outputs their immediate installed dependents. It will also notify you, if
+there are there missing deps that have no ports.
+
+.SH OPTIONS
+.TP
+no options available
+
+.SH EXAMPLES
+.B
+missdeps
+.PP
+displays dependencies that are missing from the system, and the installed
+packages, that directly depend on them:
+
+.PP
+.nf
+.fam C
+** checking for missing deps
+-- ([ ] missing, [i] = installed dependents)
+[ ] eudev
+[ ] sqlite3
+[i] apr-util
+[i] dhcpcd
+[i] libinput
+[i] libusb
+[i] nss
+[i] openmpi
+[i] pciutils
+[i] python3
+[i] util-linux
+
+.fam T
+.fi
+
+.SH SEE ALSO
+\fBmissdepslist\fP(1), \fBprt\-get\fP(8), \fBports\fP(8), \fBrevdep\fP(1)
+
+.SH AUTHOR
+
+\fBmissdeps\fP was written by Petar Petrov <slackalaxy@gmail.com> for CRUX.
