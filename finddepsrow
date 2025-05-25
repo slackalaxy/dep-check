@@ -8,17 +8,19 @@
 #
 # Petar Petrov, slackalaxy at gmail dot com
 
-# is input empty?
+# Is input empty?
 if [ "$1" = "" ]; then
-    echo "Usage: finddepsrow <port>"
+    echo "Input is empty. Usage: $(basename $0) [port...]"
     exit 1
 fi
 
-# no options used with prtdepsfix
-if [[ $1 == -* ]]; then
-    echo -e "Invalid input "$1". Usage: finddepsrow <port>"
+# no options with the tool
+for t in "$@"; do
+  if [ "${t:0:1}" = "-" ]; then
+    echo -e "Invalid input $t. Usage: $(basename $0) [package...]"
     exit 1
-fi
+  fi
+done
 
 echo "** checking"
 
