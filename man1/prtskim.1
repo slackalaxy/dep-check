@@ -11,9 +11,9 @@ prtskim \- Clean and updates port(s).
 .SH DESCRIPTION
 
 The \fBprtskim\fP script cleans and updates \fBports\fP(8), by running
-\fBprtwash\fP(1), removing any .md5sum files, and updateing .footprint
-and .signature, by calling \fBpkgmk\fP(8). It can be run on a single port
-or a collection of ports.
+\fBprtwash\fP(1), removing any .md5sum files, and updating the port's 
+.footprint and .signature, by calling \fBpkgmk\fP(8). It can be run on a
+single port or a collection of ports.
 
 .SH OPTIONS
 .TP
@@ -21,16 +21,12 @@ no options available
 
 .SH EXAMPLES
 .TP
-.B prtskim /usr/ports/myrempo/port
-cleans and updates on the specified port
-
-.TP
 .B prtskim port
-same as above for a port in the current dir
+cleans and updates the specified port
 
 .TP
 .B prtskim *
-cleans and updates on all ports found in current dir
+cleans and updates all ports found in current dir
 
 .SH SEE ALSO
 \fBprtwash\fP(1), \fBpkgmk\fP(8), \fBports\fP(8)
