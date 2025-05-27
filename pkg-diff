@@ -1,0 +1,81 @@
+#!/bin/bash
+
+# get this from the default place
+PKGDIR=$(grep -v ^\# /etc/pkg-get.conf | grep "pkgdir" | head -1 | awk '{print $2}' | awk -F '|' '{print $1}')
+PKGDIR_SNAP="/var/tmp/pkg-diff"
+
+PKGREPO="$PKGDIR/PKGREPO"
+PKGREPO_OLD="$PKGDIR_SNAP/PKGREPO"
+
+# option is invalid
+if [[ "$1" != "" ]] && [[ "$1" != "-s" ]] && [[ "$1" != "--snap" ]] && [[ "$1" != "-lr" ]] && [[ "$1" != "--list-rebuilt" ]] && [[ "$1" != "-h" ]] && [[ "$1" != "--help" ]]; then
+	echo "$(basename $0): invalid option $1"
+	exit 1
+fi
+
+# print help
+if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+	echo "usage: $(basename $0) [option]"
+	echo "options:"
+	echo "  -s,   --snap            create a snapshot of current PKGREPO"
+	echo "  -lr,  --list-rebuilt    list packages that were rebuilt"
+	echo "  -h,   --help            print help and exit"
+	exit 0
+fi
+
+# the -s option does a snapshot of PKGREPO
+if [[ "$1" = "-s" ]] || [[ "$1" = "--snap" ]]; then
+	mkdir -p $PKGDIR_SNAP
+	cp $PKGREPO $PKGREPO_OLD
+	echo "** snapshot of PKGREPO created in $PKGDIR_SNAP"
+	exit 0
+fi
+
+if ! [ -f $PKGREPO ]; then
+	echo "** PKGREPO does not exist, run pkg-get sync"
+	exit 1
+fi
+
+if ! [ -f $PKGREPO_OLD ]; then
+	echo "** old PKGREPO does not exist, run $(basename $0) --snap"
+	exit 1
+fi
+
+DIFFERENT=$(diff $PKGREPO_OLD $PKGREPO -y --suppress-common-lines | grep '|')
+
+if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
+	while IFS="|" read -r a b ; do
+		name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
+		version_a=$(echo $a | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')
+		version_b=$(echo $b | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')	
+	
+		if [[ $version_a == $version_b ]]; then
+			echo -e "$name_a"
+		fi
+	done <<< $DIFFERENT
+	exit 0
+fi
+
+if [[ -z "$DIFFERENT" ]]; then
+	echo "** no differences"
+	exit 0
+fi
+
+# TODO: shall we output these, too (in the future)?
+#PKGS_ADDED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '<')
+#PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
+
+echo "-- differences ([u] = updated, [r] = rebuilt)"
+while IFS="|" read -r a b ; do
+	name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
+	version_a=$(echo $a | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')
+	version_b=$(echo $b | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')	
+	
+	if [[ $version_a != $version_b ]]; then
+		echo -e "[u] $name_a"
+	else
+		echo -e "[r] $name_a"
+	fi
+
+# https://www.tutorialspoint.com/preserve-linebreaks-when-storing-command-output-to-a-variable
+done <<< $DIFFERENT
