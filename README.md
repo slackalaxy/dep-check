@@ -26,11 +26,11 @@ A `pkg-get sync` is only aware of packages with changed version/release,
 but will not notice those that have been rebuilt, for example after a
 `revdep` report for missing libraries.
 
-The tool compares a freshly synced by `pkg-get` PKGREPO file with a copy of
-an old one and outputs differences of packages found in both. It will
+The tool compares a freshly synced PKGREPO file with a previous copy of the
+PKGFILE, that represents the packages currently installed. The `pkg-diff`
+script will output the differences between packages found in both. It will
 distinguish between packages with a changed version/release and those
-that are at the same version but differ in their .md5sum, for examaple
-after a rebuild.
+that differ only in their .md5sum, for examaple after a rebuild.
 
 To create a snapshot of the current PKGREPO:
 ```
