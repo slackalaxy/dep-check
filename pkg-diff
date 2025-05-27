@@ -1,19 +1,34 @@
 #!/bin/bash
+#
+# pkg-diff: seek for rebuilt packages on pkg-get managed systems
+#
+# This script will compare a freshly synced PKGREPO file with a copy of
+# the old one and output differences of packages found in both. It will
+# distinguish between packages with a changed version/release and those
+# that are at the same version but differ in their md5sum, for exmaple
+# after a rebuild.
+#
+# Petar Petrov, slackalaxy at gmail dot com
 
-# get this from the default place
+# Get PKGREPO location from the default place, specified in /etc/pkg-get.conf
+# Note, that pkg-diff will take just one entry (the first one found) and will
+# ignore the rest or those that are commented out (# pkgdir).
 PKGDIR=$(grep -v ^\# /etc/pkg-get.conf | grep "pkgdir" | head -1 | awk '{print $2}' | awk -F '|' '{print $1}')
+
+# Place to store a copy of PKGREPO for comparison in the futrure, after a
+# pkg-get sync
 PKGDIR_SNAP="/var/tmp/pkg-diff"
 
 PKGREPO="$PKGDIR/PKGREPO"
 PKGREPO_OLD="$PKGDIR_SNAP/PKGREPO"
 
-# option is invalid
+# Input option is invalid
 if [[ "$1" != "" ]] && [[ "$1" != "-s" ]] && [[ "$1" != "--snap" ]] && [[ "$1" != "-lr" ]] && [[ "$1" != "--list-rebuilt" ]] && [[ "$1" != "-h" ]] && [[ "$1" != "--help" ]]; then
 	echo "$(basename $0): invalid option $1"
 	exit 1
 fi
 
-# print help
+# Print help
 if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
 	echo "usage: $(basename $0) [option]"
 	echo "options:"
@@ -23,7 +38,7 @@ if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
 	exit 0
 fi
 
-# the -s option does a snapshot of PKGREPO
+# The -s option does a copy (snapshot) of PKGREPO
 if [[ "$1" = "-s" ]] || [[ "$1" = "--snap" ]]; then
 	mkdir -p $PKGDIR_SNAP
 	cp $PKGREPO $PKGREPO_OLD
@@ -31,6 +46,7 @@ if [[ "$1" = "-s" ]] || [[ "$1" = "--snap" ]]; then
 	exit 0
 fi
 
+# Check if these exist
 if ! [ -f $PKGREPO ]; then
 	echo "** PKGREPO does not exist, run pkg-get sync"
 	exit 1
@@ -41,8 +57,11 @@ if ! [ -f $PKGREPO_OLD ]; then
 	exit 1
 fi
 
+# Do the comparisson
 DIFFERENT=$(diff $PKGREPO_OLD $PKGREPO -y --suppress-common-lines | grep '|')
 
+# If the --list-rebuilt option is passed, output diferring packages as a
+# simple list or don't output anything if no differences are found.
 if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
 	while IFS="|" read -r a b ; do
 		name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
@@ -56,15 +75,19 @@ if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
 	exit 0
 fi
 
+# If pkg-diff is run without options and no differences are found
 if [[ -z "$DIFFERENT" ]]; then
 	echo "** no differences"
 	exit 0
 fi
 
+# A more verbose output if pkg-diff is run without options, this time distinguishing
+# between different versions and packages with changed md5sum.
+#
 # TODO: shall we output these, too (in the future)?
-#PKGS_ADDED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '<')
-#PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
-
+# PKGS_ADDED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '<')
+# PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
+#
 echo "-- differences ([u] = updated, [r] = rebuilt)"
 while IFS="|" read -r a b ; do
 	name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
