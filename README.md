@@ -18,10 +18,10 @@ immediate installed dependents.
 
 ## missdepslist
 Same as above, but outputs a simple list of missing dependencies, easy
-to parse.
+to parse. This will be merged withh missdeps soon.
 
 ## pkg-diff
-This is meant for systems managed by pkg-get to install prebuilt packages.
+This is meant for systems managed by [pkg-get](https://crux.nu/portdb/?a=search&q=pkg-get) to install prebuilt packages.
 A `pkg-get sync` is only aware of packages with changed version/release,
 but will not notice those that have been rebuilt, for example after a
 `revdep` report for missing libraries.
@@ -59,7 +59,7 @@ do:
 pkg-diff -lr
 
 nss
-penmpi
+openmpi
 pciutils
 python3
 ```
