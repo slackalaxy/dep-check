@@ -62,6 +62,7 @@ DIFFERENT=$(diff $PKGREPO_OLD $PKGREPO -y --suppress-common-lines | grep '|')
 
 # If the --list-rebuilt option is passed, output diferring packages as a
 # simple list or don't output anything if no differences are found.
+# TODO: make this list ONLY installed packages
 if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
 	while IFS="|" read -r a b ; do
 		name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
@@ -88,6 +89,7 @@ fi
 # PKGS_ADDED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '<')
 # PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
 #
+# TODO: make this list ONLY installed packages
 echo "-- differences ([u] = updated, [r] = rebuilt)"
 while IFS="|" read -r a b ; do
 	name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
