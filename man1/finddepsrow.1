@@ -10,8 +10,8 @@ finddepsrow \- List port's dependencies as a row.
 .B finddepsrow
 .SH DESCRIPTION
 
-The \fBfinddepsrow\fP script Output dependencies found by \fBfinddeps\fP(1)
-as a single row, suitable for the "# Depends on:" line in the \fBPkgfile\fP(5).
+The \fBfinddepsrow\fP script outputs dependencies found by \fBfinddeps\fP(1)
+as a single row, suitable for the "\# Depends on:" line in the \fBPkgfile\fP(5).
 Dependencies from \fB(core)\fP are omitted. The wrapper also checks if any libs
 are missing by calling \fBrevdep\fP(1).
 
@@ -26,9 +26,14 @@ finddeps pinentry
 displays the dependencies of pinentry binaries and libs, in the order
 that they appear in the package database:
 
-.TP
+.PP
 cairo fontconfig freetype fribidi gdk-pixbuf glib graphite2 gtk harfbuzz libassuan libgpg-error libjpeg-turbo libpng pango xorg-libpixman xorg-libx11 xorg-libxau xorg-libxcb xorg-libxcomposite xorg-libxcursor xorg-libxdamage xorg-libxdmcp xorg-libxext xorg-libxfixes xorg-libxinerama xorg-libxrandr xorg-libxrender
 
+.B
+NOTE
+.PP
+The number of dependencies is much larger than what's listed in the port, because
+the package got linked to optional dependencies.
 
 .SH SEE ALSO
 \fBfinddeps\fP(1), \fBprt\-get\fP(8), \fBports\fP(8), \fBPkgfile\fP(5), \fBrevdep\fP(1)
