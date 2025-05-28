@@ -62,7 +62,8 @@ DIFFERENT=$(diff $PKGREPO_OLD $PKGREPO -y --suppress-common-lines | grep '|')
 
 # If the --list-rebuilt option is passed, output diferring packages as a
 # simple list or don't output anything if no differences are found.
-# TODO: make this list ONLY installed packages
+#
+# list ONLY installed packages
 if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
 	while IFS="|" read -r a b ; do
 		name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
@@ -70,7 +71,11 @@ if [[ "$1" = "-lr" ]] || [[ "$1" = "--list-rebuilt" ]]; then
 		version_b=$(echo $b | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')	
 	
 		if [[ $version_a == $version_b ]]; then
-			echo -e "$name_a"
+			# output all
+			#echo -e "$name_a"
+			
+			# output installed
+			! prt-get isinst $name_a >/dev/null 2>&1 || echo -e "$name_a"
 		fi
 	done <<< $DIFFERENT
 	exit 0
@@ -78,7 +83,7 @@ fi
 
 # If pkg-diff is run without options and no differences are found
 if [[ -z "$DIFFERENT" ]]; then
-	echo "** no differences"
+	echo "** identical PKGREPO, did you run pkg-get sync?"
 	exit 0
 fi
 
@@ -89,7 +94,7 @@ fi
 # PKGS_ADDED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '<')
 # PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
 #
-# TODO: make this list ONLY installed packages
+# list ONLY installed packages
 echo "-- differences ([u] = updated, [r] = rebuilt)"
 while IFS="|" read -r a b ; do
 	name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
@@ -97,9 +102,12 @@ while IFS="|" read -r a b ; do
 	version_b=$(echo $b | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')	
 	
 	if [[ $version_a != $version_b ]]; then
-		echo -e "[u] $name_a"
-	else
-		echo -e "[r] $name_a"
+		#echo -e "[u] $name_a"
+		! prt-get isinst $name_a >/dev/null 2>&1 || echo -e "[u] $name_a"
+	#fi
+	elif [[ $version_a == $version_b ]]; then
+		#echo -e "[r] $name_a"
+		! prt-get isinst $name_a >/dev/null 2>&1 || echo -e "[r] $name_a"
 	fi
 
 # https://www.tutorialspoint.com/preserve-linebreaks-when-storing-command-output-to-a-variable
