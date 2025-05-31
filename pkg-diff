@@ -95,7 +95,7 @@ fi
 # PKGS_REMOVED=$(diff $PKGREPO_OLD $PKGREPO_NEW -y --suppress-common-lines | grep '>')
 #
 # list ONLY installed packages
-echo "-- differences ([u] = updated, [r] = rebuilt)"
+echo "-- differences ([u] = updated, [r] = rebuilt, [+] = new, [-] = removed)"
 while IFS="|" read -r a b ; do
 	name_a=$(echo $a | awk -F  '#' '/1/ {print $1}')
 	version_a=$(echo $a | awk -F  '#' '/1/ {print $2}' | awk -F  '.pkg' '/1/ {print $1}')
