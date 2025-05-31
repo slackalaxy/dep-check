@@ -16,9 +16,8 @@ This tool uses `prt-get listinst` to check for missing dependencies of
 the packages that are installed, then reports them and outputs their
 immediate installed dependents.
 
-## missdepslist
-Same as above, but outputs a simple list of missing dependencies, easy
-to parse. This will be merged withh missdeps soon.
+Supplying the `-l|--list` option will output a simple list of missing
+dependencies, easy to parse.
 
 ## pkg-diff
 This is meant for systems managed by [pkg-get](https://crux.nu/portdb/?a=search&q=pkg-get) to install prebuilt packages.
