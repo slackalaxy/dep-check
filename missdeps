@@ -7,8 +7,28 @@
 #
 # Petar Petrov, slackalaxy at gmail dot com
 
+# Input option is invalid
+if [[ "$1" != "" ]] && [[ "$1" != "-l" ]] && [[ "$1" != "--list" ]] && [[ "$1" != "-h" ]] && [[ "$1" != "--help" ]]; then
+	echo "$(basename $0): invalid option $1"
+	exit 1
+fi
+
 missing=$(prt-get listinst | xargs prt-get depends | grep "\[ \]" | sed "s:\[ \] ::g")
 misspkg=$(prt-get listinst | xargs prt-get depends | grep "\-- missing packages")
+
+# Print help
+if [[ "$1" = "-h" ]] || [[ "$1" = "--help" ]]; then
+	echo "usage: $(basename $0) [option]"
+	echo "options:"
+	echo "  -l,   --list            list missing"
+	echo "  -h,   --help            print help and exit"
+	exit 0
+fi
+
+if [[ "$1" = "-l" ]] || [[ "$1" = "--list" ]]; then
+	prt-get listinst | xargs prt-get depends | grep "\[ \]" | sed "s:\[ \] ::g"
+	exit 0
+fi
 
 if [ -z "$missing" ] && [ -z "$misspkg" ]; then
     echo "** no missing deps"
